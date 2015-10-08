@@ -11,7 +11,6 @@ Loose CMS Style plugin requires:
 
 * Django version 1.8
 * Python 2.6 or 2.7
-* django-loose-cms
 * tinycss
 * beautifulsoup4
 
