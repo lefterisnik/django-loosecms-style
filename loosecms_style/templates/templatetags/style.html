@@ -1,0 +1,31 @@
+{% load cms_tags %}
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+        {% for style in styles %}
+            {% with source_classes=style.source_styleclasses.all classes=style.styleclasses.all %}
+                {% if style.element_is_grid %}
+                    {% if style.css %}
+                    $("#cms_plugin_{{ style.plugin.pk }}").attr("style", "{{ style.css|strip }}");
+                    {% endif %}
+                    $("#cms_plugin_{{ style.plugin.pk }}").addClass("{{ classes|join:' ' }}");
+                {% else %}
+                    {% if style.css %}
+                        {% if style.html_id%}
+                            $("#{{ style.html_id }}").attr("style", "{{ style.css|strip }}");
+                        {% else %}
+                            $("#cms_plugin_{{ style.plugin.pk }} {{style.html_tag}}.{{ source_classes|join:'.' }}").attr("style", "{{ style.css|strip }}");
+                        {% endif %}
+                    {% endif %}
+                    {% if style.html_id %}
+                        $("#{{ style.html_id }}").addClass("{{ classes|join:' ' }}");
+                    {% else %}
+                        $("#cms_plugin_{{ style.plugin.pk }} {{style.html_tag}}.{{ source_classes|join:'.' }}").addClass("{{ classes|join:' ' }}");
+                    {% endif %}
+                {% endif %}
+            {% endwith %}
+        {% endfor %}
+        });
+    }) (jQuery);
+</script>

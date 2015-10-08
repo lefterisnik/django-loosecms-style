@@ -1,0 +1,100 @@
+{% extends "admin/change_form.html" %}
+{% load i18n staticfiles cms_tags admin_urls admin_static admin_modify bootstrapped_goodies_tags %}
+
+{% block extrastyle %}{{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'loosecms/loosecms/css/admin/editor/editor.base.css' %}" />
+{% endblock %}
+
+{% block extrahead %}{{ block.super }}
+<script>
+(function ($) {
+    $(document).ready(function(){
+        $('body').on('click', '.closeTab', function(e){
+            //there are multiple elements which has .closeTab icon so close the tab whose close icon is clicked
+            var tabContentId = $(this).parent().attr("href");
+            $(this).parent().parent().remove(); //remove li of tab
+            $('#myTab a:last').tab('show'); // Select first tab
+            $(tabContentId).remove(); //remove respective tab content
+        });
+    });
+})(django.jQuery);
+</script>
+{% endblock %}
+
+{% block content %}
+<form action="{{ form_url }}" method="post" role="form" novalidate>{% csrf_token %}
+    {{ formset.management_form }}
+    <div class="col-sm-9 form-fields">
+        <div class="panel panel-default form-panel">
+            <div class="panel-body">
+                <div class="alert alert-warning">{% blocktrans %}Fields in <strong>bold</strong> are required.{% endblocktrans %}</div>
+                {% if formset.errors %}
+                <div class="alert alert-danger">
+                    {% if formset.errors|length == 1 %}{% trans "Please correct the error below." %}{% else %}{% trans "Please correct the errors below." %}{% endif %}
+                    {{ formset.non_field_errors }}
+                </div>
+                {% endif %}
+
+                <div id="content-main">
+                    <div>
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist" id="myTab">
+                            {% for form in formset %}
+                            <li role="presentation" {% if forloop.first %}class="active"{% endif %}>
+                                <a href="#{{ form.position.value|slugify }}" aria-controls="{{ form.position.value|slugify }}" role="tab" data-toggle="tab">
+                                    {{ form.position.value }}
+                                    <button type="button" class="close closeTab" style="margin: -2px 0 0 10px; font-size: 18px;">×</button>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            {% for form in formset %}
+                            <div role="tabpanel" class="tab-pane {% if forloop.first %}active{% endif %}" id="{{ form.position.value|slugify }}">
+                                <br/>
+                                <div>
+                                    {% for field in form %}
+                                    <div class="row">
+                                        <div class="control-group {% if field.errors %} error{% endif %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if field.is_hidden%} hidden{% endif %}">
+                                            <div class="col-md-12 form-group {% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if not field.is_readonly and field.errors %} errors{% endif %}{% if field.is_hidden %} hidden{% endif %}">
+                                                <div class="control-label col-md-3">
+                                                    {{ field.label_tag }}
+                                                </div>
+
+                                                <div class="controls col-md-9">
+                                                    {% if field.is_readonly %}
+                                                        <p>{{ field.contents }}</p>
+                                                    {% else %}
+                                                        {% dab_field_rendering field %}
+                                                    {% endif %}
+                                                    {% if not field.is_readonly and field.errors %}<span class="text-danger">{{ field.errors|striptags }}</span>{% endif %}
+                                                    {% if field.field.help_text %}
+                                                        <span class="help-block">{{ field.field.help_text|safe }}</span>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 form-actions">
+        <div data-spy="affix" data-offset-top="125">
+            <div class="list-group">
+                <button type="submit" title="{% trans 'Save' %}" class="list-group-item active" name="_save">
+                    {% trans 'Save' %}
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
