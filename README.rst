@@ -11,6 +11,7 @@ Loose CMS Style plugin requires:
 
 * Django version 1.8
 * Python 2.6 or 2.7
+* loosecms
 * tinycss
 * beautifulsoup4
 
@@ -26,6 +27,8 @@ Quick Start
     INSTALLED_APPS = (
         ...
         'loosecms_style',
+        'loosecms',
+        ...
     )
  Must be before other Loose CMS plugins.
     

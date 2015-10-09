@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load style_tags cms_tags %}
+
+{% block plugins %}
+            <div class="container" id="content">
+                {% render_template %}
+            </div>
+{% endblock %}
+
+{% block extra_js %} {{ block.super }}
+    {% add_classes %}
+{% endblock %}

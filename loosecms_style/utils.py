@@ -40,7 +40,7 @@ def get_source_styleclasses(html_tag):
     defaults = []
     for class_ in html_tag.classes:
         try:
-            styleclass = StyleClass.objects.get(title=class_.name, override=False)
+            styleclass = StyleClass.objects.get(title=class_.name)
             # TODO: if override is False then user don't change it (add extra attrs )
             # so it is safe to update class attrs
         except StyleClass.DoesNotExist:

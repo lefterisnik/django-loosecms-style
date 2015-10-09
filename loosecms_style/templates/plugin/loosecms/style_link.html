@@ -1,0 +1,5 @@
+{% load i18n %}
+
+<li class="divider"></li>
+<li class="dropdown-header">{{ app }}</li>
+<li><a href="{% url 'admin:admin_edit_style' plugin.pk %}" class="loosecms-plugin">{% trans 'Edit style'%}</a></li>
