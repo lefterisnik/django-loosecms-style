@@ -30,7 +30,8 @@ Quick Start
         'loosecms',
         ...
     )
- Must be before other Loose CMS plugins.
+
+   Must be before other Loose CMS plugins.
     
 3. Run `python manage.py migrate` to create the loosecms_style models.
 
@@ -42,7 +43,7 @@ Settings
 
 1. EXCLUDE_STYLE_PLUGINS:
 
- If you want to exclude some plugin from style parser add it to this setting. Eg:
+   If you want to exclude some plugin from style parser add it to this setting. Eg:
 
     EXCLUDE_STYLE_PLUGINS = (
         'TextPlugin',

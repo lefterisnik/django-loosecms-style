@@ -51,4 +51,8 @@ class Style(models.Model):
     def __unicode__(self):
         return self.title
 
+    class Meta:
+        verbose_name = _('style')
+        verbose_name_plural = _('styles')
+
 post_save.connect(update_css_file, sender=StyleClassAttribute)

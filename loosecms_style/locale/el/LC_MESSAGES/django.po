@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-12 22:51+0300\n"
+"POT-Creation-Date: 2015-10-12 23:05+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,11 +74,23 @@ msgstr "χαρακτηριστικό κλάσης"
 msgid "class attributes"
 msgstr "χαρακτηριστικά κλάσης"
 
+#: models.py:55
+#, fuzzy
+#| msgid "Style"
+msgid "style"
+msgstr "Στυλ"
+
+#: models.py:56
+#, fuzzy
+#| msgid "Style"
+msgid "styles"
+msgstr "Στυλ"
+
 #: plugin.py:32
 msgid "Style"
 msgstr "Στυλ"
 
-#: plugin.py:112 plugin.py:178 plugin.py:197
+#: plugin.py:118 plugin.py:184 plugin.py:203
 msgid "Edit stylesheet"
 msgstr "Επεξεργασία στυλ"
 
