@@ -36,3 +36,14 @@ Quick Start
 
 4. Run development server `python manage.py runserver` and visit http://127.0.0.1:8000/ to start
    playing with the cms.
+
+Settings
+--------
+
+1. EXCLUDE_STYLE_PLUGINS:
+
+ If you want to exclude some plugin from style parser add it to this setting. Eg:
+
+    EXCLUDE_STYLE_PLUGINS = (
+        'TextPlugin',
+    )
