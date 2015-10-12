@@ -164,6 +164,7 @@ class StylePlugin(PluginModelAdmin):
                         else:
                             style = Style(title=title, plugin=plugin, original_html=original_html, html_tag=html_tag,
                                   html_id=html_id, source_css=source_css, css=css, element_is_grid=True)
+                            style.save()
                     else:
                         update_values.update(
                             element_is_grid=False
@@ -173,6 +174,7 @@ class StylePlugin(PluginModelAdmin):
                         else:
                             style = Style(title=title, plugin=plugin, original_html=original_html, html_tag=html_tag,
                                   html_id=html_id, source_css=source_css, css=css, element_is_grid=False)
+                            style.save()
 
                     for styleclass in styleclasses:
                         if styleclass in source_styleclasses_queryset:
