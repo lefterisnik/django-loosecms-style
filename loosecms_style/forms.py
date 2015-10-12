@@ -21,7 +21,15 @@ class BaseStyleFormSet(BaseFormSet):
 
 
 class StyleForm(forms.Form):
+    class Media:
+        js = ('loosecms_style/external/prism.js',)
+        css = {
+            'all': ('loosecms_style/external/prism.css',)
+        }
+
     required_css_class = 'required'
+
+    pk = forms.IntegerField(widget=forms.HiddenInput(), required=False)
 
     title = forms.CharField(max_length=150)
 

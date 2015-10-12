@@ -70,7 +70,7 @@ class StylePlugin(PluginModelAdmin):
         if plugin_modeladmin.__class__.__name__ == 'RowPlugin':
             rendered_template = '<div class="row" id="cms_plugin_' + str(plugin_manager.pk) + '">'
         elif plugin_modeladmin.__class__.__name__ == 'ColumnPlugin':
-            rendered_template = '<div class="col-lg-' + plugin_manager.width + '" id="cms_plugin_' + str(plugin_manager.pk) + '">'
+            rendered_template = '<div class="col-lg-' + str(plugin_manager.width) + '" id="cms_plugin_' + str(plugin_manager.pk) + '">'
         else:
             if plugin_modeladmin.template:
                 # TODO: Find a way to render plugin template as will showed properly in the page
@@ -94,7 +94,8 @@ class StylePlugin(PluginModelAdmin):
                 csss = []
                 for finder in finders.get_finders():
                     for file_ in list(finder.list(['*.js', '*.min.css', '*.woff2', '*.svg', '*.eot', '*.woff', '*.ttf',
-                                                  '*.png', '*.jpg', '*.otf', '*.psd', '*.map', '*.txt', '*.gif', '*.md'])):
+                                                  '*.png', '*.jpg', '*.otf', '*.psd', '*.map', '*.txt', '*.gif',
+                                                  '*.md', '*admin*', '*ckeditor*', '*loosecms_style*'])):
                         csss.append(finders.find(file_[0]))
 
                 # Call utils function which finds all css attributes given template
@@ -117,10 +118,12 @@ class StylePlugin(PluginModelAdmin):
             return render(request, 'admin/edit_style_form.html', context)
 
         if request.method == 'POST':
-            StyleFormSet = formset_factory(StyleForm, formset=BaseStyleFormSet)
+            StyleFormSet = formset_factory(StyleForm, formset=BaseStyleFormSet, can_delete=True)
             formset = StyleFormSet(data=request.POST, files=request.FILES, admin_site=self.admin_site)
+
             if formset.is_valid():
                 for form in formset:
+                    pk = form.cleaned_data['pk']
                     title = form.cleaned_data['title']
                     original_html = form.cleaned_data['original_html']
                     html_tag = form.cleaned_data['html_tag']
@@ -130,17 +133,61 @@ class StylePlugin(PluginModelAdmin):
                     styleclasses = form.cleaned_data['styleclasses']
                     source_styleclasses = form.cleaned_data['source_styleclasses']
 
+                    if form in formset.deleted_forms:
+                        try:
+                            style = Style.objects.get(pk=pk)
+                            style.delete()
+                            continue
+                        except Style.DoesNotExist:
+                            pass
+
                     source_styleclasses = [x for x in source_styleclasses.split(',')]
                     source_styleclasses_queryset = StyleClass.objects.filter(title__in=source_styleclasses)
+                    update_values = dict(
+                        title=title,
+                        plugin=plugin,
+                        original_html=original_html,
+                        html_tag=html_tag,
+                        html_id=html_id,
+                        source_css=source_css,
+                        css=css
+                    )
 
                     if plugin.type == 'RowPlugin' or plugin.type == 'ColumnPlugin':
-                        style = Style(title=title, plugin=plugin, original_html=original_html, html_tag=html_tag,
+                        update_values.update(
+                            element_is_grid=True
+                        )
+
+                        if pk:
+                            style, created = Style.objects.update_or_create(pk=pk, defaults=update_values)
+                        else:
+                            style = Style(title=title, plugin=plugin, original_html=original_html, html_tag=html_tag,
                                   html_id=html_id, source_css=source_css, css=css, element_is_grid=True)
                     else:
-                        style = Style(title=title, plugin=plugin, original_html=original_html, html_tag=html_tag,
+                        update_values.update(
+                            element_is_grid=False
+                        )
+                        if pk:
+                            style, created = Style.objects.update_or_create(pk=pk, defaults=update_values)
+                        else:
+                            style = Style(title=title, plugin=plugin, original_html=original_html, html_tag=html_tag,
                                   html_id=html_id, source_css=source_css, css=css, element_is_grid=False)
-                    style.save()
+
                     for styleclass in styleclasses:
+                        if styleclass in source_styleclasses_queryset:
+                            form.add_error('styleclasses', '%s styleclass is arleady in source styleclasess' % styleclass)
+                            context = dict(
+                                # Include common variables for rendering the admin template.
+                                self.admin_site.each_context(request),
+                                current_app=self.admin_site.name,
+                                title=_('Edit stylesheet'),
+                                formset=formset,
+                                media = self.media + formset.media,
+                                is_popup=True,
+                                template=rendered_template,
+                                form_url=urlresolvers.reverse('admin:admin_edit_style', args=(pk,))
+                            )
+                            return render(request, 'admin/edit_style_form.html', context)
                         style.styleclasses.add(styleclass)
 
                     for source_styleclass in source_styleclasses_queryset:

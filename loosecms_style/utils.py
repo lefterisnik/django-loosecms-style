@@ -8,6 +8,7 @@ from .models import *
 # The following 3 functions is used for populating form
 def get_initial_values(plugin_style_inst, plugin):
     db_styles = Style.objects.filter(plugin=plugin)
+    print db_styles
     return [get_dict(html_tag, db_styles) for html_tag in plugin_style_inst.html_tags]
 
 
@@ -15,15 +16,18 @@ def get_dict(html_tag, db_styles):
     source_styleclasses = get_source_styleclasses(html_tag)
     try:
         db_style = db_styles.get(html_id=html_tag.id, html_tag=html_tag.name, original_html=html_tag.original)
+        pk = db_style.pk
         title = db_style.title
         css = db_style.css
         styleclasses = db_style.styleclasses.all()
     except Style.DoesNotExist:
+        pk = None
         title = None
         css = None
         styleclasses = None
 
     return {
+        'pk': pk,
         'title': title,
         'original_html': html_tag.original,
         'html_tag': html_tag.name,

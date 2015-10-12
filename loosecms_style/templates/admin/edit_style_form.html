@@ -1,5 +1,5 @@
 {% extends "admin/change_form.html" %}
-{% load i18n staticfiles cms_tags admin_urls admin_static admin_modify bootstrapped_goodies_tags %}
+{% load i18n staticfiles style_tags admin_urls admin_static admin_modify bootstrapped_goodies_tags %}
 
 {% block extrastyle %}{{ block.super }}
     <link rel="stylesheet" type="text/css" href="{% static 'loosecms/loosecms/css/admin/editor/editor.base.css' %}" />
@@ -9,15 +9,25 @@
 <script>
 (function ($) {
     $(document).ready(function(){
+        $('body').on('show.bs.tab', 'a[data-toggle="tab"]', function (e) {
+            var lines = $(this).data('lines');
+            $('#style-highlight').attr('data-line', lines);
+            Prism.highlightAll();
+
+        });
+
         $('body').on('click', '.closeTab', function(e){
             //there are multiple elements which has .closeTab icon so close the tab whose close icon is clicked
             var tabContentId = $(this).parent().attr("href");
             $(this).parent().parent().remove(); //remove li of tab
-            $('#myTab a:last').tab('show'); // Select first tab
+            $('#myTab a:first').tab('show'); // Select first tab
             $(tabContentId).remove(); //remove respective tab content
+            /*if ($('.data-toggle').length == 0) {
+                self.close();
+            }*/
         });
     });
-})(django.jQuery);
+})(jQuery);
 </script>
 {% endblock %}
 
@@ -37,12 +47,18 @@
 
                 <div id="content-main">
                     <div>
+                        <pre id="style-highlight" style="max-height: 250px;"><code class="language-markup">{{ template }}</code></pre>
+                        <br/>
+
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs" role="tablist" id="myTab">
                             {% for form in formset %}
                             <li role="presentation" {% if forloop.first %}class="active"{% endif %}>
-                                <a href="#{{ form.position.value|slugify }}" aria-controls="{{ form.position.value|slugify }}" role="tab" data-toggle="tab">
+                                <a href="#{{ form.position.value|slugify }}" aria-controls="{{ form.position.value|slugify }}" data-lines="{{form.position.value|lines}}" role="tab" data-toggle="tab">
                                     {{ form.position.value }}
+                                    {% if form.errors %}
+                                    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                                    {% endif %}
                                     <button type="button" class="close closeTab" style="margin: -2px 0 0 10px; font-size: 18px;">×</button>
                                 </a>
                             </li>
