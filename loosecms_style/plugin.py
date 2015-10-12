@@ -144,6 +144,7 @@ class StylePlugin(PluginModelAdmin):
 
                     source_styleclasses = [x for x in source_styleclasses.split(',')]
                     source_styleclasses_queryset = StyleClass.objects.filter(title__in=source_styleclasses)
+
                     update_values = dict(
                         title=title,
                         plugin=plugin,
@@ -158,24 +159,15 @@ class StylePlugin(PluginModelAdmin):
                         update_values.update(
                             element_is_grid=True
                         )
-
-                        if pk:
-                            style, created = Style.objects.update_or_create(pk=pk, defaults=update_values)
-                        else:
-                            style = Style(title=title, plugin=plugin, original_html=original_html, html_tag=html_tag,
-                                  html_id=html_id, source_css=source_css, css=css, element_is_grid=True)
-                            style.save()
                     else:
                         update_values.update(
                             element_is_grid=False
                         )
-                        if pk:
-                            style, created = Style.objects.update_or_create(pk=pk, defaults=update_values)
-                        else:
-                            style = Style(title=title, plugin=plugin, original_html=original_html, html_tag=html_tag,
-                                  html_id=html_id, source_css=source_css, css=css, element_is_grid=False)
-                            style.save()
 
+                    style, created = Style.objects.update_or_create(pk=pk, defaults=update_values)
+
+                    style.styleclasses.clear()
+                    style.source_styleclasses.clear()
                     for styleclass in styleclasses:
                         if styleclass in source_styleclasses_queryset:
                             form.add_error('styleclasses', '%s styleclass is arleady in source styleclasess' % styleclass)

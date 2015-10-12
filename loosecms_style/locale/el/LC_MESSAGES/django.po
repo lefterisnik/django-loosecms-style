@@ -1,0 +1,107 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-10-12 22:51+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: apps.py:8
+msgid "Loose CMS Plugin - Style"
+msgstr "Loose CMS Πρόσθετο - Στυλ"
+
+#: forms.py:35
+msgid "Title"
+msgstr "Τίτλος"
+
+#: forms.py:37
+msgid "Original html"
+msgstr "Αρχικό html"
+
+#: forms.py:40
+msgid "Html tag"
+msgstr "Html επικεφαλίδα"
+
+#: forms.py:44
+msgid "Html id"
+msgstr "Html μοναδικό αναγνωριστικό"
+
+#: forms.py:48
+msgid "Source css"
+msgstr "Πηγαίο css"
+
+#: forms.py:51
+msgid "CSS"
+msgstr "CSS"
+
+#: forms.py:54
+msgid "Source style classes"
+msgstr "Πηγαίες κλάσεις στυλ"
+
+#: forms.py:58
+msgid "Style classes"
+msgstr "Κλάσεις στυλ"
+
+#: forms.py:59
+msgid "Add or remove style classes."
+msgstr "Προσθέστε ή αφαιρέστε κλάσεις στυλ."
+
+#: models.py:20
+msgid "class"
+msgstr "κλάση"
+
+#: models.py:21
+msgid "classes"
+msgstr "κλάσεις"
+
+#: models.py:34
+msgid "class attribute"
+msgstr "χαρακτηριστικό κλάσης"
+
+#: models.py:35
+msgid "class attributes"
+msgstr "χαρακτηριστικά κλάσης"
+
+#: plugin.py:32
+msgid "Style"
+msgstr "Στυλ"
+
+#: plugin.py:112 plugin.py:178 plugin.py:197
+msgid "Edit stylesheet"
+msgstr "Επεξεργασία στυλ"
+
+#: templates/admin/edit_style_form.html:40
+msgid "Fields in <strong>bold</strong> are required."
+msgstr "Τα πεδία με <strong>έντονο</strong> είναι απαραίτητα."
+
+#: templates/admin/edit_style_form.html:43
+msgid "Please correct the error below."
+msgstr "Παρακαλώ διορθώστε το λάθος παρακάτω."
+
+#: templates/admin/edit_style_form.html:43
+msgid "Please correct the errors below."
+msgstr "Παρακαλώ διορθώστε τα λάθη παρακάτω."
+
+#: templates/admin/edit_style_form.html:109
+#: templates/admin/edit_style_form.html:110
+msgid "Save"
+msgstr "Αποθήκευση"
+
+#: templates/plugin/loosecms/style_link.html:5
+msgid "Edit style"
+msgstr "Επεξεργασία στυλ"
+
+#~ msgid "css"
+#~ msgstr "css"

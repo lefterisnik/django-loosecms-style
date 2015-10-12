@@ -8,7 +8,6 @@ from .models import *
 # The following 3 functions is used for populating form
 def get_initial_values(plugin_style_inst, plugin):
     db_styles = Style.objects.filter(plugin=plugin)
-    print db_styles
     return [get_dict(html_tag, db_styles) for html_tag in plugin_style_inst.html_tags]
 
 
