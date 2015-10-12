@@ -43,7 +43,7 @@ Settings
 
 1. EXCLUDE_STYLE_PLUGINS:
 
-   If you want to exclude some plugin from style parser add it to this setting. Eg:
+   If you want to exclude some plugin from style parser add it to this setting. Eg::
 
     EXCLUDE_STYLE_PLUGINS = (
         'TextPlugin',
