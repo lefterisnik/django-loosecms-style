@@ -12,7 +12,7 @@ def update_css_file(sender, instance, created, **kwargs):
     if settings.DEBUG:
         result = finders.find('loosecms_style/css/style.css')
     else:
-        result = settings.STATIC_ROOT + 'loosecms_style/css/style.css'
+        result = settings.STATIC_ROOT + '/loosecms_style/css/style.css'
     with open(result, 'w') as file_:
         style_css = files.File(file_)
 
