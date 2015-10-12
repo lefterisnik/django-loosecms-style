@@ -3,6 +3,7 @@ import re
 from bs4 import BeautifulSoup
 
 from django.apps import apps
+from django.conf import settings
 from django.conf.urls import url
 from django.template import loader
 from django.shortcuts import render

@@ -9,7 +9,10 @@ def update_css_file(sender, instance, created, **kwargs):
     # Case 1: Maybe user edit file manually so changes will be lost
     # Case 2: If multiple add or changes occurs will be executed to many queries
     styleclassattrs = sender.objects.filter(override=True)
-    result = finders.find('loosecms_style/css/style.css')
+    if settings.DEBUG:
+        result = finders.find('loosecms_style/css/style.css')
+    else:
+        result = settings.STATIC_ROOT + 'loosecms_style/css/style.css'
     with open(result, 'w') as file_:
         style_css = files.File(file_)
 
