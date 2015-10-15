@@ -51,19 +51,20 @@ class StylePlugin(PluginModelAdmin):
         :return: urls
         """
         style_urls = [
-            url(r'^edit_style/(?P<pk>\d+)/$', self.admin_site.admin_view(self.edit_style),
+            url(r'^(?P<page_pk>\d+)/edit_style/(?P<pk>\d+)/$', self.admin_site.admin_view(self.edit_style),
                 name='admin_edit_style'),
         ]
 
         return style_urls
 
-    def edit_style(self, request, pk):
+    def edit_style(self, request, page_pk, pk):
         """
         Prompt edit style form for requested plugin
         :param request:
         :param pk:
         :return: HTML (edit_style_form) or a script that close popup window
         """
+        page = get_object_or_404(HtmlPage, pk=page_pk)
         plugin = get_object_or_404(Plugin, pk=pk)
 
         # Create the modeladmin instance of the plugin
@@ -82,6 +83,7 @@ class StylePlugin(PluginModelAdmin):
             if plugin_modeladmin.template:
                 # TODO: Find a way to render plugin template as will showed properly in the page
                 request_context = RequestContext(request)
+                request_context['page_slug'] = page.slug
                 rendered_template = plugin_modeladmin.render_to_string(request_context, plugin_manager)
 
         # Normalize template without whitespaces
@@ -120,7 +122,7 @@ class StylePlugin(PluginModelAdmin):
                 media = self.media + formset.media,
                 is_popup=True,
                 template=rendered_template,
-                form_url=urlresolvers.reverse('admin:admin_edit_style', args=(pk,))
+                form_url=urlresolvers.reverse('admin:admin_edit_style', args=(page_pk, pk))
             )
             return render(request, 'admin/edit_style_form.html', context)
 
@@ -186,7 +188,7 @@ class StylePlugin(PluginModelAdmin):
                                 media = self.media + formset.media,
                                 is_popup=True,
                                 template=rendered_template,
-                                form_url=urlresolvers.reverse('admin:admin_edit_style', args=(pk,))
+                                form_url=urlresolvers.reverse('admin:admin_edit_style', args=(page_pk, pk))
                             )
                             return render(request, 'admin/edit_style_form.html', context)
                         style.styleclasses.add(styleclass)
@@ -205,7 +207,7 @@ class StylePlugin(PluginModelAdmin):
                     media = self.media + formset.media,
                     is_popup=True,
                     template=rendered_template,
-                    form_url=urlresolvers.reverse('admin:admin_edit_style', args=(pk,))
+                    form_url=urlresolvers.reverse('admin:admin_edit_style', args=(page_pk, pk))
                 )
                 return render(request, 'admin/edit_style_form.html', context)
 
