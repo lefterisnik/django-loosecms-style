@@ -36,7 +36,7 @@ class StylePlugin(PluginModelAdmin):
     def render_link(self, context, plugin):
         exclude_style_plugins = getattr(settings, 'EXCLUDE_STYLE_PLUGINS', None)
 
-        if exclude_style_plugins and plugin.type not in exclude_style_plugins:
+        if not exclude_style_plugins or plugin.type not in exclude_style_plugins:
             template = loader.get_template(self.template_link)
             context['app'] = apps.get_app_config('loosecms_style').verbose_name
             context['plugin'] = plugin
