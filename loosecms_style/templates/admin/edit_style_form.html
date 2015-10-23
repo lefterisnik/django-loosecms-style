@@ -18,6 +18,10 @@
 
         $('body').on('click', '.closeTab', function(e){
             //there are multiple elements which has .closeTab icon so close the tab whose close icon is clicked
+            var totalFormsField = $('#id_form-TOTAL_FORMS');
+            var totalForms = parseInt(totalFormsField.val()) - 1;
+            totalFormsField.val(totalForms);
+
             var tabContentId = $(this).parent().attr("href");
             $(this).parent().parent().remove(); //remove li of tab
             $('#myTab a:first').tab('show'); // Select first tab
@@ -59,7 +63,9 @@
                                     {% if form.errors %}
                                     <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
                                     {% endif %}
+                                    {% if not forloop.first %}
                                     <button type="button" class="close closeTab" style="margin: -2px 0 0 10px; font-size: 18px;">×</button>
+                                    {% endif %}
                                 </a>
                             </li>
                             {% endfor %}

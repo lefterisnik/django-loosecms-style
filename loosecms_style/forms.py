@@ -39,8 +39,7 @@ class StyleForm(forms.Form):
                                     max_length=150)
     html_tag = forms.CharField(label=_('Html tag'),
                                widget=forms.TextInput(attrs={'readonly': True}),
-                               max_length=150,
-                               required=True)
+                               max_length=150)
     html_id = forms.CharField(label=_('Html id'),
                               widget=forms.TextInput(attrs={'readonly': True}),
                               max_length=150,
@@ -70,3 +69,11 @@ class StyleForm(forms.Form):
                                                                        Style._meta.get_field('styleclasses').rel,
                                                                        self.admin_site, can_change_related=True)
         self.fields['styleclasses'].queryset = StyleClass.objects.all()
+
+    def clean(self):
+        cleaned_data = super(StyleForm, self).clean()
+        css = cleaned_data['css']
+        styleclasses = cleaned_data['styleclasses']
+
+        if 'title' not in cleaned_data and not css and not styleclasses:
+            del self.errors['title']

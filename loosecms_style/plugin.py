@@ -127,11 +127,15 @@ class StylePlugin(PluginModelAdmin):
             return render(request, 'admin/edit_style_form.html', context)
 
         if request.method == 'POST':
-            StyleFormSet = formset_factory(StyleForm, formset=BaseStyleFormSet, can_delete=True)
+            StyleFormSet = formset_factory(StyleForm, formset=BaseStyleFormSet, can_delete=True,
+                                           validate_min=True, min_num=1)
             formset = StyleFormSet(data=request.POST, files=request.FILES, admin_site=self.admin_site)
 
             if formset.is_valid():
                 for form in formset:
+                    if 'title' not in form.cleaned_data:
+                        continue
+
                     pk = form.cleaned_data['pk']
                     title = form.cleaned_data['title']
                     original_html = form.cleaned_data['original_html']
@@ -158,7 +162,7 @@ class StylePlugin(PluginModelAdmin):
                         plugin=plugin,
                         original_html=original_html,
                         html_tag=html_tag,
-                        html_id=html_id,
+                        html_id=html_id if html_id else None,
                         source_css=source_css,
                         css=css
                     )
