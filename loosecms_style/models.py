@@ -40,7 +40,7 @@ class Style(models.Model):
     plugin = models.ForeignKey(Plugin)
     original_html = models.TextField(default='')
     html_tag = models.CharField(max_length=50)
-    html_id = models.CharField(max_length=50, unique=True, blank=True)
+    html_id = models.CharField(max_length=50, unique=True, blank=True, null=True)
     source_styleclasses = models.ManyToManyField(StyleClass, related_name='source_styleclasses', blank=True)
     styleclasses = models.ManyToManyField(StyleClass, blank=True)
     source_css = models.TextField(blank=True)
